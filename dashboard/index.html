@@ -14,6 +14,75 @@
     <link rel="stylesheet" href="style.css">
     <!-- Bootstrap Icons Start -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    
+     <!-- Chart -->
+     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+
+        var button = document.getElementById('change-chart');
+        var chartDiv = document.getElementById('chart_div');
+
+        var data = google.visualization.arrayToDataTable([
+          ['Subjects', 'Assignments', 'Credits'],
+          ['WAD', 6, 18],
+          ['CC', 6, 12],
+          ['CNS', 6,12],
+          ['DSBDA', 6, 12]
+        ]);
+
+        var materialOptions = {
+          width: 600,
+          chart: {
+            title: 'Subject Credits',
+            subtitle: 'Credits'
+          },
+          series: {
+            0: { axis: 'Subjects' }, 
+            1: { axis: 'Assignments' } 
+          },
+          axes: {
+            y: {
+              Subjects: {label: 'Assignments'}, // Left y-axis.
+              Assignments: {side: 'right', label: 'Total credits'} // Right y-axis.
+            }
+          }
+        };
+
+        var classicOptions = {
+          width: 600,
+          series: {
+            0: {targetAxisIndex: 0},
+            1: {targetAxisIndex: 1}
+          },
+          title: 'Subject Credits',
+          vAxes: {
+            // Adds titles to each axis.
+            0: {title: 'Assignments'},
+            1: {title: 'Total credits '}
+          }
+        };
+
+        function drawMaterialChart() {
+          var materialChart = new google.charts.Bar(chartDiv);
+          materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+          button.innerText = 'Change to Classic';
+          button.onclick = drawClassicChart;
+        }
+
+        function drawClassicChart() {
+          var classicChart = new google.visualization.ColumnChart(chartDiv);
+          classicChart.draw(data, classicOptions);
+          button.innerText = 'Change to Material';
+          button.onclick = drawMaterialChart;
+        }
+
+        drawMaterialChart();
+    };
+    </script>
 
 </head>
 
@@ -26,7 +95,7 @@
             <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
                 aria-controls="offcanvas"><span class="navbar-toggler-icon"></span></button>
             <!-- Sidebar Trigger End -->
-            <a class="navbar-brand fw-bold me-auto" href="#">DASHBOARD</a>
+            <a class="navbar-brand fw-bold me-auto" href="#">STUDENT</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -35,8 +104,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <form class="d-flex ms-auto">
                     <div class="input-group my-3 my-lg-0">
-                        <input type="text" class="form-control" placeholder="username"
-                            aria-label="username" aria-describedby="button-addon2">
+                        <input type="text" class="form-control" placeholder="username" aria-label="username"
+                            aria-describedby="button-addon2">
                         <button class="btn btn-primary" type="button" id="button-addon2"><i
                                 class="bi bi-search"></i></button>
                     </div>
@@ -48,12 +117,12 @@
                             <i class="bi bi-person-square"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            <li><a class="dropdown-item" href="#">Help</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -62,6 +131,9 @@
     </nav>
     <!-- Navbar End -->
 
+
+   
+
     <!-- Sidebar Start -->
     <div class="offcanvas offcanvas-start bg-dark text-white side-bar" data-bs-scroll="true" tabindex="-1"
         id="offcanvas" aria-labelledby="offcanvas">
@@ -69,13 +141,7 @@
             <nav class="navbar-dark">
                 <ul class="navbar-nav">
                     <li>
-                        <div class="text-muted small fw-bold text-uppercase px-3">Core</div>
-                    </li>
-                    <li>
                         <a href="#" class="nav-link px-3 active">
-                            <span class="me-2">
-                                <i class="bi bi-wrench-adjustable-circle"></i>
-                            </span>
                             <span class="fw-bold">Dashboard</span>
                         </a>
                     </li>
@@ -83,13 +149,9 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <div class="text-muted small fw-bold text-uppercase px-3">Interface</div>
-                    </li>
-                    <li>
                         <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#collapseExample"
                             role="button" aria-expanded="false" aria-controls="collapseExample">
-                            <span class="me-2"><i class="bi bi-layout-text-window-reverse"></i></span>
-                            <span class="fw-bold">Layouts</span>
+                            <span class="fw-bold">Tasks</span>
                             <span class="right-icon ms-auto">
                                 <i class="bi bi-chevron-down"></i>
                             </span>
@@ -99,51 +161,99 @@
                                 <ul class="navbar-nav ps-3">
                                     <li>
                                         <a href="#" class="nav-link px-3">
-                                            <span class="me-2"><i class="bi bi-layout-text-window-reverse"></i></span>
-                                            <span class="fw-bold">Nested Link</span>
+                                            <span class="fw-bold">Task 1</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">Task 2</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">Task 3</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">Task 4</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-
-                    <li>
-                        <a href="#" class="nav-link px-3">
-                            <span class="me-2">
-                                <i class="bi bi-archive"></i>
-                            </span>
-                            <span class="fw-bold">Archive</span>
-                        </a>
                     </li>
+
                     <li class="my-4">
                         <hr class="dropdown-divider">
                     </li>
+
                     <li>
-                        <div class="text-muted small fw-bold text-uppercase px-3">Addons</div>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link px-3">
-                            <span class="me-2">
-                                <i class="bi bi-activity"></i>
+                        <a class="nav-link px-3 sidebar-link" data-bs-toggle="collapse" href="#collapseExample"
+                            role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <span class="fw-bold">Credits Allotment</span>
+                            <span class="right-icon ms-auto">
+                                <i class="bi bi-chevron-down"></i>
                             </span>
-                            <span class="fw-bold">Activity</span>
                         </a>
+                        <div class="collapse" id="collapseExample">
+                            <div>
+                                <ul class="navbar-nav ps-3">
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">WAD - 3</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">CC - 2</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">CNS - 2</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="nav-link px-3">
+                                            <span class="fw-bold">DSBDA - 2</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </li>
+
+                    <li class="my-4">
+                        <hr class="dropdown-divider">
+                    </li>
+
                     <li>
-                        <a href="#" class="nav-link px-3">
-                            <span class="me-2">
-                                <i class="bi bi-clipboard2-data"></i>
-                            </span>
-                            <span class="fw-bold">Data</span>
-                        </a>
+                        <span class="nav-link fw-bold px-3" role="button">Semister</span>
                     </li>
+
+                    <li>
+                        <span class="nav-link fw-bold px-3" role="button">Department</span>
+                    </li>
+
+                    <li>
+                        <span class="nav-link fw-bold px-3" role="button">Instructors</span>
+                    </li>
+
+                    <li>
+                        <span class="nav-link fw-bold px-3" role="button">Timetable</span>
                     </li>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
-    <!-- Sidebar End -->
 
     <!-- Main Content Start -->
     <main class="mt-5 pt-3">
@@ -154,37 +264,37 @@
             <div class="row mt-2">
                 <div class="col-md-3 mb-3">
                     <div class="card text-white bg-primary h-100">
-                        <div class="card-header fw-bold">Header</div>
+                        <div class="card-header fw-bold">Total</div>
                         <div class="card-body">
-                            <h5 class="card-title">title</h5>
-                            <p class="card-text">sss</p>
+                            <h5 class="card-title">Assignments</h5>
+                            <p class="card-text">24</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="card text-white bg-success h-100">
-                        <div class="card-header fw-bold">Header</div>
+                        <div class="card-header fw-bold">Total</div>
                         <div class="card-body">
-                            <h5 class="card-title">title</h5>
-                            <p class="card-text">ggg</p>
+                            <h5 class="card-title">Submitted</h5>
+                            <p class="card-text">6</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="card text-white bg-warning h-100">
-                        <div class="card-header fw-bold">Header</div>
+                        <div class="card-header fw-bold">Total</div>
                         <div class="card-body">
-                            <h5 class="card-title">itle</h5>
-                            <p class="card-text">pppp</p>
+                            <h5 class="card-title">Pending</h5>
+                            <p class="card-text">18</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="card text-white bg-danger h-100">
-                        <div class="card-header fw-bold">Header</div>
+                        <div class="card-header fw-bold">Total</div>
                         <div class="card-body">
-                            <h5 class="card-title">title</h5>
-                            <p class="card-text">hhhh</p>
+                            <h5 class="card-title">Credits</h5>
+                            <p class="card-text">15</p>
                         </div>
                     </div>
                 </div>
@@ -202,127 +312,48 @@
                                 <table id="example" class="table data-table" style="width:100%">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>Assignment Name</th>
+                                            <th>Subject</th>
+                                            <th>Submission Date</th>
+                                            <th>Credits</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
+                                            <td>HTML</td>
+                                            <td>WAD</td>
+                                            <td>2024/01/05</td>
+                                            <td>3</td>
                                         </tr>
                                         <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
+                                            <td>Bootstrap</td>
+                                            <td>WAD</td>
+                                            <td>2023/12/15</td>
+                                            <td>3</td>
                                         </tr>
                                         <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
+                                            <td>TCIL</td>
+                                            <td>CNS</td>
+                                            <td>2024/01/11</td>
+                                            <td>2</td>
                                         </tr>
                                         <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
+                                            <td>Cloud</td>
+                                            <td>CC</td>
+                                            <td>2023/11/05</td>
+                                            <td>2</td>
                                         </tr>
                                         <tr>
-                                            <td>Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Jena Gaines</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>30</td>
-                                            <td>2008/12/19</td>
-                                            <td>$90,560</td>
+                                            <td>Data Cleansing</td>
+                                            <td>DSBDA</td>
+                                            <td>2024/01/02</td>
+                                            <td>2</td>
                                         </tr>
                                         <tr>
-                                            <td>Quinn Flynn</td>
-                                            <td>Support Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2013/03/03</td>
-                                            <td>$342,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Charde Marshall</td>
-                                            <td>Regional Director</td>
-                                            <td>San Francisco</td>
-                                            <td>36</td>
-                                            <td>2008/10/16</td>
-                                            <td>$470,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Haley Kennedy</td>
-                                            <td>Senior Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>43</td>
-                                            <td>2012/12/18</td>
-                                            <td>$313,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tatyana Fitzpatrick</td>
-                                            <td>Regional Director</td>
-                                            <td>London</td>
-                                            <td>19</td>
-                                            <td>2010/03/17</td>
-                                            <td>$385,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michael Silva</td>
-                                            <td>Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>66</td>
-                                            <td>2012/11/27</td>
-                                            <td>$198,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Paul Byrd</td>
-                                            <td>Chief Financial Officer (CFO)</td>
-                                            <td>New York</td>
-                                            <td>64</td>
-                                            <td>2010/06/09</td>
-                                            <td>$725,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gloria Little</td>
-                                            <td>Systems Administrator</td>
-                                            <td>New York</td>
-                                            <td>59</td>
-                                            <td>2009/04/10</td>
-                                            <td>$237,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bradley Greer</td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
-                                            <td>41</td>
-                                            <td>2012/10/13</td>
-                                            <td>$132,000</td>
+                                            <td>JavaScript</td>
+                                            <td>WAD</td>
+                                            <td>2023/12/11</td>
+                                            <td>3</td>
                                         </tr>
 
                                     </tbody>
@@ -342,6 +373,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
+
+        <div class="chart">
+            <button id="change-chart">Change to Classic</button>
+        <br><br>
+        <div id="chart_div" style="width: 800px; height: 500px;"></div>
+    
+        </div>
+    
+        <!-- <div id="chart_div"></div> -->
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"> </script>
 
 </body>
 
