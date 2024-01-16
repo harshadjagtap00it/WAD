@@ -72,6 +72,10 @@ body
 }
 
 
+.chart{
+    padding: 80px 480px;
+}
+
 
 
 /* striped table effect */
@@ -92,4 +96,3 @@ label
 {
     cursor: pointer;
 }
-
